@@ -14,7 +14,7 @@ struct Book
 };
 
 void GenArrTest(Book* books);
-void PrintArr(Book* books, int size);
+void PrintAllBooks(Book* books, int size);
 void PrintBook(Book* book);
 int GetMaxStrSize(Book* book);
 void Frame(Book* book);

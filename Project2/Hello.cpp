@@ -35,7 +35,7 @@ int main()
 		switch (choice)
 		{
 		case print:
-			PrintArr(books, SIZE);
+			PrintAllBooks(books, SIZE);
 			system("pause");
 			continue;
 			break;

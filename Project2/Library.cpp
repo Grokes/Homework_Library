@@ -3,10 +3,11 @@
 
 using namespace std;
 
-void PrintArr(Book* books, int size)
+void PrintAllBooks(Book* books, int size)
 {
 	for (int i{}; i < size; i++)
 	{
+		cout << "Индекс книги: " << i << endl; 
 		PrintBook(books + i);
 	}
 }
@@ -19,6 +20,7 @@ void PrintBook(Book* book)
 	cout << "Жанр: " << book->genre << endl;
 	cout << "Издательство: " << book->pubHouse << endl;
 	Frame(book);
+	cout << endl;
 }
 
 void Frame(Book* book)
