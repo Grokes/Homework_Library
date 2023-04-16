@@ -4,6 +4,12 @@ using namespace std;
 
 void Menu_Find(Book* books, int size)
 {
+	if (books == nullptr)
+	{
+		cout << "Данные не внесены\n";
+		system("pause");
+		return;
+	}
 	int choice{};
 	string arg_find{};
 	vector<int> bookIndArr{};
@@ -55,6 +61,12 @@ void Menu_Find(Book* books, int size)
 
 void Menu_Sort(Book* books, int size)
 {
+	if (books == nullptr)
+	{
+		cout << "Данные не внесены\n";
+		system("pause");
+		return;
+	}
 	int choice{};
 
 	cout << "1. Сортировка по названию\n"
@@ -82,6 +94,12 @@ void Menu_Sort(Book* books, int size)
 
 void Menu_Edit(Book* books, int size)
 {
+	if (books == nullptr)
+	{
+		cout << "Данные не внесены\n";
+		system("pause");
+		return;
+	}
 	int choice{};
 	string new_data{};
 	int book_ind{};
@@ -124,4 +142,19 @@ void Menu_Edit(Book* books, int size)
 	default:
 		break;
 	}
+}
+
+void Menu_SaveLoad(Book*& books, int& size, bool (*func)(Book*&, int&, const char*))
+{
+	string path{};
+	cout << "Введите путь: ";
+	cin.ignore();
+	getline(cin, path);
+	system("cls");
+	if (!func(books, size, path.c_str()))
+		cout << "Операция успешна\n";
+	else
+		cout << "Неудача\n";
+
+	system("pause");
 }

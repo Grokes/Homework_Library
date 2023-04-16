@@ -1,23 +1,29 @@
+#pragma once
 #include <iostream>
+#include <Windows.h>
 #include <string>
 #include <stdlib.h>
 #include "Library.h"
-#include <Windows.h>
 #include "LibMenu.h"
 
 using namespace std;
 
+struct Test
+{
+	int a;
+};
+
 int main()
 {
-	setlocale(LC_ALL, "Rus");
+	SetConsoleOutputCP(1251);
 	SetConsoleCP(1251);
 
-	enum { print = 1, find, sort, edit, _exit };
+	enum { print = 1, find, sort, edit, load, save, _exit = 7 };
 	int SIZE{ 6 };
 	int choice{};
 
-	Book* books = new Book[SIZE]{};
-	GenArrTest(books);
+	Book* books{};
+	//GenArrTest(books);
 
 	while (true)
 	{
@@ -27,7 +33,9 @@ int main()
 			<< "2. Поиск\n"
 			<< "3. Сортировка книг\n"
 			<< "4. Внести изменения в данные\n"
-			<< "5. Выход\n"
+			<< "5. Загрузить\n"
+			<< "6. Сохранить\n"
+			<< "7. Выход\n"
 			<< "Ввод: ";
 		cin >> choice;
 		system("cls");
@@ -35,7 +43,10 @@ int main()
 		switch (choice)
 		{
 		case print:
-			PrintAllBooks(books, SIZE);
+			if (books == nullptr)
+				cout << "Данные не внесены\n";
+			else
+				PrintAllBooks(books, SIZE);
 			system("pause");
 			continue;
 			break;
@@ -48,6 +59,12 @@ int main()
 		case edit:
 			Menu_Edit(books, SIZE);
 			break;
+		case load:
+			Menu_SaveLoad(books, SIZE, LoadBooks);
+			break;
+		case save:
+			Menu_SaveLoad(books, SIZE, SaveBooks);
+			break;
 		case _exit:
 			exit(0);
 			break;
@@ -55,6 +72,8 @@ int main()
 			break;
 		}
 	}
+
+	
 
 	return 0;
 }

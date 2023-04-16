@@ -1,4 +1,3 @@
-#include <iostream>
 #include "Library.h"
 
 using namespace std;
@@ -262,4 +261,66 @@ vector<int> FindBook(Book* books, string arg_find, int arg_field, int size)
 	}
 
 	return result;
+}
+
+bool SaveBooks(Book*& books, int& size, const char* path)
+{
+	FILE* out;
+
+	if (fopen_s(&out, path, "w") != NULL)
+		return 1;
+	fprintf(out, "Кол-во книг: %d\n\n", size);
+	for (int i{}; i < size; i++)
+	{
+		fprintf(out, "Название: %s\n", books[i].title.c_str());
+		fprintf(out, "Автор: %s\n", books[i].author.c_str());
+		fprintf(out, "Жанр: %s\n", books[i].genre.c_str());
+		fprintf(out, "Издательство: %s\n", books[i].pubHouse.c_str());
+		fputc('\n', out);
+	}
+
+	fclose(out);
+	return 0;
+}
+
+bool LoadBooks(Book*& books, int& size, const char* path)
+{
+	FILE* in;
+	const int MAXLEN = 256;
+	char temp[MAXLEN]{};
+
+	if (fopen_s(&in, path, "r") != NULL)
+		return 1;
+
+	delete[] books;
+
+	fscanf_s(in, "Кол-во книг: %d\n\n", &size);
+	books = new Book[size];
+
+	for (int i{}; i < size; i++)
+	{
+		fscanf_s(in, "Название: ");
+		fgets(temp, MAXLEN - 1, in);
+		books[i].title = temp;
+		books[i].title.pop_back();
+
+		fscanf_s(in, "Автор: ");
+		fgets(temp, MAXLEN - 1, in);
+		books[i].author = temp;
+		books[i].author.pop_back();
+
+		fscanf_s(in, "Жанр: ");
+		fgets(temp, MAXLEN - 1, in);
+		books[i].genre = temp;
+		books[i].genre.pop_back();
+
+		fscanf_s(in, "Издательство: ");
+		fgets(temp, MAXLEN - 1, in);
+		books[i].pubHouse = temp;
+		books[i].pubHouse.pop_back();
+		fscanf_s(in, "\n");
+	}
+	//fscanf_s(in, "\n");
+	fclose(in);
+	return 0;
 }
