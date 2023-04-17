@@ -27,3 +27,6 @@ void EditBook(Book* book, string arg_edit, int arg_field);
 vector<int> FindBook(Book* books, string arg_find, int arg_field, int size);
 bool SaveBooks(Book*& books, int& size, const char* path = "C:\\TestFolder\\out.txt");
 bool LoadBooks(Book*& books, int& size, const char* path = "C:\\TestFolder\\out.txt");
+bool SaveBooksBin(Book*& books, int& size, const char* path = "C:\\TestFolder\\outbin.txt");
+bool LoadBooksBin(Book*& books, int& size, const char* path = "C:\\TestFolder\\outbin.txt");
+void Read(unsigned int ind, const char* path = "C:\\TestFolder\\out.txt");

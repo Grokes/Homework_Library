@@ -213,7 +213,7 @@ void GenArrTest(Book* books)
 	books[1].pubHouse = "Образование";
 	books[1].genre = "Рассказ";
 
-	books[2].title = "Мир как воля и предстваление";
+	books[2].title = "Мир как воля и представление";
 	books[2].author = "Шопенгауэр";
 	books[2].pubHouse = "Философия";
 	books[2].genre = "Эссе";
@@ -320,7 +320,80 @@ bool LoadBooks(Book*& books, int& size, const char* path)
 		books[i].pubHouse.pop_back();
 		fscanf_s(in, "\n");
 	}
-	//fscanf_s(in, "\n");
+	fclose(in);
+	return 0;
+}
+
+bool SaveBooksBin(Book*& books, int& size, const char* path)
+{
+	FILE* out;
+	int temp{};
+
+	if (fopen_s(&out, path, "wb") != NULL)
+		return 1;
+
+	fwrite(&size, sizeof(int), 1, out);
+	for (int i{}; i < size; ++i)
+	{
+		temp = books[i].title.size();
+		fwrite(&temp, sizeof(int), 1, out);
+		fwrite(books[i].title.c_str(), temp, 1, out);
+
+		temp = books[i].author.size();
+		fwrite(&temp, sizeof(int), 1, out);
+		fwrite(books[i].author.c_str(), temp, 1, out);
+
+		temp = books[i].genre.size();
+		fwrite(&temp, sizeof(int), 1, out);
+		fwrite(books[i].genre.c_str(), temp, 1, out);
+
+		temp = books[i].pubHouse.size();
+		fwrite(&temp, sizeof(int), 1, out);
+		fwrite(books[i].pubHouse.c_str(), temp, 1, out);
+	}
+	
+
+	fclose(out);
+	return 0;
+}
+
+bool LoadBooksBin(Book*& books, int& size, const char* path)
+{
+	FILE* in;
+	const int MAXLEN = 256;
+	char tempStr[MAXLEN]{};
+	int tempInt{};
+
+	if (fopen_s(&in, path, "rb") != NULL)
+		return 1;
+
+	delete[] books;
+
+	fread(&size, sizeof(int), 1, in);
+	books = new Book[size]{};
+
+	for (int i{}; i < size; ++i)
+	{
+		fread(&tempInt, sizeof(int), 1, in);
+		fread(&tempStr, tempInt, 1, in);
+		books[i].title = tempStr;
+
+		for (int i = 0; i < MAXLEN; i++)tempStr[i] = 0;
+		fread(&tempInt, sizeof(int), 1, in);
+		fread(&tempStr, tempInt, 1, in);
+		books[i].author = tempStr;
+
+		for (int i = 0; i < MAXLEN; i++)tempStr[i] = 0;
+		fread(&tempInt, sizeof(int), 1, in);
+		fread(&tempStr, tempInt, 1, in);
+		books[i].genre = tempStr;
+
+		for (int i = 0; i < MAXLEN; i++)tempStr[i] = 0;
+		fread(&tempInt, sizeof(int), 1, in);
+		fread(&tempStr, tempInt, 1, in);
+		books[i].pubHouse = tempStr;
+	}
+
 	fclose(in);
 	return 0;
 }

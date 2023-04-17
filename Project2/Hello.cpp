@@ -8,22 +8,21 @@
 
 using namespace std;
 
-struct Test
-{
-	int a;
-};
-
 int main()
 {
 	SetConsoleOutputCP(1251);
 	SetConsoleCP(1251);
 
-	enum { print = 1, find, sort, edit, load, save, _exit = 7 };
+	enum { print = 1, find, sort, edit, load, save, read, _exit = 8};
 	int SIZE{ 6 };
 	int choice{};
 
+	bool (*funcSave[2])(Book*&, int&, const char*) {SaveBooks, SaveBooksBin};
+	bool (*funcLoad[2])(Book*&, int&, const char*) {LoadBooks, LoadBooksBin};
+
 	Book* books{};
-	//GenArrTest(books);
+	/*books = new Book[SIZE]{};
+	GenArrTest(books);*/
 
 	while (true)
 	{
@@ -35,7 +34,8 @@ int main()
 			<< "4. Внести изменения в данные\n"
 			<< "5. Загрузить\n"
 			<< "6. Сохранить\n"
-			<< "7. Выход\n"
+			<< "7. Прочитать запись из файла\n"
+			<< "8. Выход\n"
 			<< "Ввод: ";
 		cin >> choice;
 		system("cls");
@@ -60,10 +60,13 @@ int main()
 			Menu_Edit(books, SIZE);
 			break;
 		case load:
-			Menu_SaveLoad(books, SIZE, LoadBooks);
+			Menu_SaveLoad(books, SIZE, funcLoad);
 			break;
 		case save:
-			Menu_SaveLoad(books, SIZE, SaveBooks);
+			Menu_SaveLoad(books, SIZE, funcSave);
+			break;
+		case read:
+			Menu_Read(funcLoad);
 			break;
 		case _exit:
 			exit(0);
@@ -72,8 +75,6 @@ int main()
 			break;
 		}
 	}
-
-	
 
 	return 0;
 }

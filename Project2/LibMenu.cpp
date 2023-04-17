@@ -144,17 +144,96 @@ void Menu_Edit(Book* books, int size)
 	}
 }
 
-void Menu_SaveLoad(Book*& books, int& size, bool (*func)(Book*&, int&, const char*))
+void Menu_SaveLoad(Book*& books, int& size, bool (**func)(Book*&, int&, const char*))
 {
+	int choice{};
 	string path{};
+	cout << "Формат файла\n"
+			"1. .txt\n"
+			"2. .bin\n"
+			"Ввод: ";
+	cin >> choice;
+	system("cls");
+
 	cout << "Введите путь: ";
 	cin.ignore();
 	getline(cin, path);
 	system("cls");
-	if (!func(books, size, path.c_str()))
-		cout << "Операция успешна\n";
-	else
-		cout << "Неудача\n";
+
+	switch (choice)
+	{
+	case 1:
+		if (!func[0](books, size, path.c_str()))
+			cout << "Операция успешна\n";
+		else
+			cout << "Неудача\n";
+		break;
+	case 2:
+		if (!func[1](books, size, path.c_str()))
+			cout << "Операция успешна\n";
+		else
+			cout << "Неудача\n";
+		break;
+	default:
+		break;
+	}
+	
+
+	system("pause");
+}
+
+void Menu_Read(bool (**func)(Book*&, int&, const char*))
+{
+	Book* books_temp{};
+	int size_temp{};
+	int ind{};
+	int choice{};
+	string path{};
+
+	cout << "Формат файла\n"
+		"1. .txt\n"
+		"2. .bin\n"
+		"Ввод: ";
+	cin >> choice;
+	system("cls");
+
+	cout << "Введите путь: ";
+	cin.ignore();
+	getline(cin, path);
+	system("cls");
+
+
+	switch (choice)
+	{
+	case 1:
+		if (!func[0](books_temp, size_temp, path.c_str()))
+		{
+			cout << "Введите индекс записи: ";
+			cin >> ind;
+			if (ind < size_temp)
+				PrintBook(&books_temp[ind]);
+			else
+				cout << "Запись не найдена\n";
+		}
+		else
+			cout << "Не удалось открыть файл\n";
+		break;
+	case 2:
+		if (!func[1](books_temp, size_temp, path.c_str()))
+		{
+			cout << "Введите индекс записи: ";
+			cin >> ind;
+			if (ind < size_temp)
+				PrintBook(&books_temp[ind]);
+			else
+				cout << "Запись не найдена\n";
+		}
+		else
+			cout << "Не удалось открыть файл\n";
+		break;
+	default:
+		break;
+	}
 
 	system("pause");
 }
